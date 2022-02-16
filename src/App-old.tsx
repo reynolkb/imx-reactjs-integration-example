@@ -16,28 +16,21 @@ const App = () => {
 	const [balance, setBalance] = useState<ImmutableMethodResults.ImmutableGetBalanceResult>(Object);
 	const [client, setClient] = useState<ImmutableXClient>(Object);
 	const [walletConnected, setWalletConnected] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		buildIMX();
-	}, []);
-
-	// when the client has finished loading then we can run our other functions
-	// this function does run twice, once upon setting the initial state of client and then again when client is updated with buildIMX()
-	// useEffect(() => {
-	// 	// can run functions
-	// }, [client]);
+		const onLoad = async () => {
+			await buildIMX();
+			// await checkWalletConnected();
+		};
+		onLoad();
+	}, [loading]);
+	setLoading(false);
 
 	// initialise an Immutable X Client to interact with apis more easily
-	async function buildIMX(): Promise<void> {
+	async function buildIMX() {
 		const publicApiUrl: string = process.env.REACT_APP_ROPSTEN_ENV_URL ?? '';
-		let clientResponse = await ImmutableXClient.build({ publicApiUrl });
-		setClient(clientResponse);
-		if (localStorage.getItem('address')) {
-			setWalletConnected(true);
-			let walletAddress = localStorage.getItem('address') as string;
-			setWallet(walletAddress);
-			setBalance(await clientResponse.getBalance({ user: walletAddress, tokenAddress: 'eth' }));
-		}
+		await loadingSetClient(publicApiUrl);
 	}
 
 	// register and/or setup a user
@@ -47,6 +40,29 @@ const App = () => {
 		setBalance(await client.getBalance({ user: res.address, tokenAddress: 'eth' }));
 
 		localStorage.setItem('address', res.address);
+		setWalletConnected(true);
+	}
+
+	async function loadingSetClient(publicApiUrl: string) {
+		setClient(await ImmutableXClient.build({ publicApiUrl }));
+	}
+
+	function logBalance() {
+		console.log(balance.balance);
+	}
+
+	async function checkWalletConnected(): Promise<void> {
+		// if (localStorage.getItem('address')) {
+		// 	await linkSetup();
+		// }
+		console.log(client);
+		const res = await link.setup({});
+	}
+
+	async function logOut() {
+		localStorage.removeItem('address');
+		setWallet('undefined');
+		setWalletConnected(false);
 	}
 
 	function handleTabs() {
@@ -65,16 +81,11 @@ const App = () => {
 		return null;
 	}
 
-	function logOut() {
-		localStorage.removeItem('address');
-		setWallet('undefined');
-		setWalletConnected(false);
-	}
-
 	return (
 		<div className='App'>
 			<button onClick={linkSetup}>Setup</button>
 			<button onClick={logOut}>Log Out</button>
+			<button onClick={logBalance}>Log Balance</button>
 			<div>Active wallet: {wallet}</div>
 			{walletConnected ? <div>Immutable X ETH balance (in wei): {balance?.balance?.toString()}</div> : <div>Immutable X ETH balance (in wei):</div>}
 			<button onClick={() => setTab('marketplace')}>Marketplace</button>
