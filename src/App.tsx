@@ -66,10 +66,15 @@ const App = () => {
 		setWalletConnected(false);
 	}
 
+	async function moonPay() {
+		await link.fiatToCrypto({});
+	}
+
 	return (
 		<div className='App'>
 			<button onClick={linkSetup}>Setup</button>
 			<button onClick={logOut}>Log Out</button>
+			<button onClick={moonPay}>Buy ETH</button>
 			<div>Active wallet: {wallet}</div>
 			{walletConnected ? <div>Immutable X ETH balance (in wei): {balance?.balance?.toString()}</div> : <div>Immutable X ETH balance (in wei):</div>}
 			<button onClick={() => setTab('marketplace')}>Marketplace</button>
