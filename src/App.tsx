@@ -21,20 +21,14 @@ const App = () => {
 		buildIMX();
 	}, []);
 
-	// when the client has finished loading then we can run our other functions
-	// this function does run twice, once upon setting the initial state of client and then again when client is updated with buildIMX()
-	// useEffect(() => {
-	// 	// can run functions
-	// }, [client]);
-
 	// initialise an Immutable X Client to interact with apis more easily
 	async function buildIMX(): Promise<void> {
 		const publicApiUrl: string = process.env.REACT_APP_ROPSTEN_ENV_URL ?? '';
 		let clientResponse = await ImmutableXClient.build({ publicApiUrl });
 		setClient(clientResponse);
 		if (localStorage.getItem('address')) {
-			setWalletConnected(true);
 			let walletAddress = localStorage.getItem('address') as string;
+			setWalletConnected(true);
 			setWallet(walletAddress);
 			setBalance(await clientResponse.getBalance({ user: walletAddress, tokenAddress: 'eth' }));
 		}
@@ -43,6 +37,7 @@ const App = () => {
 	// register and/or setup a user
 	async function linkSetup(): Promise<void> {
 		const res = await link.setup({});
+		setWalletConnected(true);
 		setWallet(res.address);
 		setBalance(await client.getBalance({ user: res.address, tokenAddress: 'eth' }));
 
