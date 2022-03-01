@@ -37,6 +37,7 @@ const App = () => {
 	// register and/or setup a user
 	async function linkSetup(): Promise<void> {
 		const res = await link.setup({});
+		console.log(res);
 		setWalletConnected(true);
 		setWallet(res.address);
 		setBalance(await client.getBalance({ user: res.address, tokenAddress: 'eth' }));

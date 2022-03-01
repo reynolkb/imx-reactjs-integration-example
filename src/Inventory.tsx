@@ -128,12 +128,12 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
 								id: mintTokenIdv2,
 								blueprint: mintBlueprintv2,
 								// overriding royalties for specific token
-								royalties: [
-									{
-										recipient: tokenReceiverAddress.toLowerCase(),
-										percentage: 3.5,
-									},
-								],
+								// royalties: [
+								// 	{
+								// 		recipient: tokenReceiverAddress.toLowerCase(),
+								// 		percentage: 0.0,
+								// 	},
+								// ],
 							},
 						],
 					},
@@ -141,15 +141,15 @@ const Inventory = ({ client, link, wallet }: InventoryProps) => {
 				contractAddress: token_address.toLowerCase(),
 
 				// globally set royalties
-				royalties: [
-					{
-						recipient: tokenReceiverAddress.toLowerCase(),
-						percentage: 4.0,
-					},
-				],
+				// royalties: [
+				// 	{
+				// 		recipient: tokenReceiverAddress.toLowerCase(),
+				// 		percentage: 0.0,
+				// 	},
+				// ],
 			},
 		]);
-		console.log(`Token minted: ${result}`);
+		console.log(`Token minted: ${JSON.stringify(result)}`);
 		setInventory(await client.getAssets({ user: wallet, sell_orders: true }));
 	}
 

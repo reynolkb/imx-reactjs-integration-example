@@ -1,5 +1,6 @@
 import { Link, ImmutableXClient, ImmutableMethodResults, ERC721TokenType, ETHTokenType, ImmutableRollupStatus } from '@imtbl/imx-sdk';
 import { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
 require('dotenv').config();
 
 interface BridgingProps {
@@ -51,33 +52,13 @@ const Bridging = ({ client, link, wallet }: BridgingProps) => {
 	}
 
 	// deposit an NFT
-	// async function depositNFT() {
-	// 	console.log('depositNFT function hit');
-	// 	try {
-	// 		await link.deposit({
-	// 			type: ERC721TokenType.ERC721,
-	// 			tokenId: depositTokenId,
-	// 			tokenAddress: depositTokenAddress,
-	// 		});
-	// 		console.log('success deposit');
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 	}
-	// }
-
-	function depositNFT() {
-		console.log('depositNFT function hit');
-		link.deposit({
+	async function depositNFT() {
+		await link.deposit({
 			type: ERC721TokenType.ERC721,
 			tokenId: depositTokenId,
 			tokenAddress: depositTokenAddress,
-		})
-			.then(() => {
-				console.log('success deposit');
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		});
+		console.log('success deposit');
 	}
 
 	// deposit eth
@@ -116,9 +97,20 @@ const Bridging = ({ client, link, wallet }: BridgingProps) => {
 
 	// complete an eth withdrawal
 	async function completeWithdrawalETH() {
+		// var res = await link.completeWithdrawal({
+		// 	type: ETHTokenType.ETH,
+		// });
+		// console.log(res['transactionId']);
 		await link.completeWithdrawal({
 			type: ETHTokenType.ETH,
 		});
+	}
+
+	function logWithdrawalsPrepared() {
+		console.log(preparingWithdrawals['result'][0]['token']['data']['quantity']);
+		console.log(preparingWithdrawals['result'][0]['token']['data']['quantity']['_hex']);
+		let hexEthAmount = preparingWithdrawals['result'][0]['token']['data']['quantity']['_hex'];
+		console.log(hexEthAmount);
 	}
 
 	return (
@@ -223,6 +215,7 @@ const Bridging = ({ client, link, wallet }: BridgingProps) => {
 				Withdrawn to wallet:
 				{JSON.stringify(completedWithdrawals)}
 			</div>
+			<button onClick={logWithdrawalsPrepared}>Click Me</button>
 		</div>
 	);
 };

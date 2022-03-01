@@ -1,0 +1,24 @@
+{
+	"order_id": 5574,
+	"status": "active",
+	"user": "0xc120a52ad90bb926bafcdfc9161740dcf4a2cea1",
+	"sell": {
+		"type": "ERC721",
+		"data": {
+			"token_id": "1",
+			"id": "1",
+			"token_address": "0xea443d159515d6199cd5d06b6a135c849bcc1047",
+			"quantity": { "type": "BigNumber", "hex": "0x01" },
+			"properties": {
+				"name": "Hoot1",
+				"image_url": "https://gateway.pinata.cloud/ipfs/QmS1hWKuKTHwYJHoGnJUkzSumAnxLaWjMdfmEeyNDdkyfn",
+				"collection": { "name": "3nd contract Moot", "icon_url": "https://gateway.pinata.cloud/ipfs/QmS1hWKuKTHwYJHoGnJUkzSumAnxLaWjMdfmEeyNDdkyfn" }
+			}
+		}
+	},
+	"buy": { "type": "ETH", "data": { "token_address": "", "decimals": 18, "quantity": { "type": "BigNumber", "hex": "0x544bf5c541c46c0000" } } },
+	"amount_sold": null,
+	"expiration_timestamp": "2120-12-07T12:00:00.000Z",
+	"timestamp": "2021-12-07T12:27:06.152Z",
+	"updated_timestamp": "2021-12-07T12:27:06.152795Z"
+}
